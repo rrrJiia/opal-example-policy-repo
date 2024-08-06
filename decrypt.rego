@@ -1,27 +1,25 @@
 package token.decrypt
 
-import input
-
 # Function to verify and decode the JWT token
-# Using the secret from an environment variable
 verify_and_decode_jwt(token) = payload {
-    # Retrieve the secret key from an environment variable
-    # secret := opa.runtime().env["JWT_SECRET"]
-    # [_ payload, _] := io.jwt.decode_verify(token)
-    
+    # Decode the token to get the payload
     [_, payload, _] := io.jwt.decode(token)
+    # Debug: Print the decoded payload
+    trace(sprintf("Decoded payload: %v", [payload]))
 }
 
-# Extract the JWT from the Authorization header if present
-extracted_jwt = token {
-    # Check if the Authorization header is present and contains a bearer token
-    auth_header := input.request.headers["Authorization"][0]
-    startswith(auth_header, "Bearer ")
-    token := substring(auth_header, count("Bearer "), -1)
-}
-
-# Get the decoded payload from the extracted JWT
+# Get the decoded payload from the input token
 decoded_payload = payload {
-    token := extracted_jwt
+    token := input.token
     payload := verify_and_decode_jwt(token)
+    # Debug: Print the extracted token
+    trace(sprintf("Extracted token: %v", [token]))
+}
+
+# Extract user_id from the decoded payload
+user_id = id {
+    payload := decoded_payload
+    id := payload.user_id
+    # Debug: Print the extracted user_id
+    trace(sprintf("Extracted user_id: %v", [id]))
 }
