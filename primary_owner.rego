@@ -25,17 +25,29 @@ get_primary_owner_info_by_user_id[user_id] {
         }
     })
     
-    print("HTTP response for user: %v", [resp.body])
+    # print("HTTP response: %v", [resp])
+
+    # Check if the HTTP response is successful
     resp.status_code == 200
-    fetched_data := object.get(resp.body, "roles", null)
-    fetched_data != null
+
+    # Extract roles from the response body
+    roles := object.get(resp.body, "roles", [])
+    print("Extracted roles: %v", [roles])
+
+    # Ensure that roles are not null
+    not roles == []
     
     some i
     entry := resp.body.roles[i]
+    print("Extracted entry: %v", [entry])
     entry.role == "primary-owner"
+    print("Extracted entry: %v", [entry.role])
     entry.user_id == user_id
+    print("Extracted entry: %v", [entry.user_id])
     entry.vehicle_id == input.vehicle_id
+    print("Extracted entry: %v", [entry.vehicle_id])
 }
+ 
 
 allow {
     # get_user_by_user_id[user_id]
