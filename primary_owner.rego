@@ -1,6 +1,6 @@
-package user.active
-
+package primary.owner
 import data.token.decrypt
+import data.user.active
 
 default allow = false
 
@@ -8,18 +8,12 @@ default allow = false
 user_id := decrypt.user_id
 
 # HTTP request to get a user by user_id
-get_user_by_user_id[user_id] {
+get_primary_owner_info_by_user_id[user_id] {
     # Use the user_id from the decrypted token
     user_id := decrypt.user_id
 
-    # Debug: Print the user_id used in HTTP request
-    print(user_id)
-    
-    # Construct the URL
-    url := sprintf("https://user-mgmt.dev.ue1.dc.goriv.co/id/v2/users/%s", [user_id])
-    
-    print("auth token:", opa.runtime().env["AUTH_TOKEN"])
-    
+    url := sprintf("https://vms.dev.ue1.dc.goriv.co/vms/v2/provision/list/users/%s", [user_id])
+        
     # Perform HTTP request and capture response
     resp := http.send({
         "method": "get",
@@ -31,17 +25,19 @@ get_user_by_user_id[user_id] {
         }
     })
     
-    # Debug: Print the HTTP response
-    print("HTTP response for user: %v", [resp.body.data.disabled])
+    print("HTTP response for user: %v", [resp.body])
     resp.status_code == 200
-    fetched_data := object.get(resp.body, "data", null)
+    fetched_data := object.get(resp.body, "roles", null)
     fetched_data != null
-    # Ensure status code check before binding response
-    # resp.status_code == 200
-    not fetched_data.disabled
+    
+    some i
+    entry := resp.body.roles[i]
+    entry.role == "primary-owner"
+    entry.user_id == user_id
+    entry.vehicle_id == input.vehicle_id
 }
 
-# Policy to allow actions based on conditions
-allow {       
-    get_user_by_user_id[user_id]
+allow {
+    # get_user_by_user_id[user_id]
+    get_primary_owner_info_by_user_id[user_id]
 }
