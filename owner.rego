@@ -1,8 +1,11 @@
 package primary.owner
 import data.token.decrypt
 import data.user.active
+
 default allow = false
+
 user_id := decrypt.user_id
+
 # HTTP request to get a user by user_id
 get_primary_owner_info_by_user_id[user_id] {
     # Use the user_id from the decrypted token
@@ -39,5 +42,6 @@ get_primary_owner_info_by_user_id[user_id] {
 }
 allow {
     # get_user_by_user_id[user_id]
+    user_id := decrypt.user_id
     get_primary_owner_info_by_user_id[user_id]
 }
