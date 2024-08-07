@@ -32,7 +32,7 @@ get_user_by_user_id[user_id] {
     })
     
     # Debug: Print the HTTP response
-    print("HTTP response for user: %v", [resp])
+    print("HTTP response for user: %v", [resp.body.data.disabled])
     
     # Ensure status code check before binding response
     resp.status_code == 200
