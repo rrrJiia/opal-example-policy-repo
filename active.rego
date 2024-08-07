@@ -37,7 +37,7 @@ get_user_by_user_id[user_id] {
     
     # Ensure status code check before binding response
     resp.status_code == 200
-    not resp.body.disabled
+    not resp.body.data.disabled
 }
 
 # Policy to allow actions based on conditions
