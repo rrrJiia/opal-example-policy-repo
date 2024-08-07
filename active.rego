@@ -34,10 +34,10 @@ get_user_by_user_id[user_id] {
     
     # Ensure status code check before binding response
     resp.status_code == 200
-    data := object.get(resp.body, "data", null)
-    data != null
+    fetched_data := object.get(resp.body, "data", null)
+    fetched_data != null
 
-    not data.disabled
+    not fetched_data.disabled
     
 }
 
