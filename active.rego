@@ -18,6 +18,7 @@ get_user_by_user_id[user_id] {
     # Construct the URL
     url := sprintf("https://user-mgmt.dev.ue1.dc.goriv.co/id/v2/users/%s", [user_id])
     
+    auth_token := opa.runtime().env["AUTH_TOKEN"]
     print("auth token:", opa.runtime().env["AUTH_TOKEN"])
     
     # Perform HTTP request and capture response
@@ -25,9 +26,9 @@ get_user_by_user_id[user_id] {
         "method": "get",
         "url": url,
         "headers": {
-            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjZiOTE4Y2Q4MDY5YjEzNmQxNWExMWRlNzIxZTA3YjBjMzhkYTA2YTAiLCJ0eXAiOiJKV1QifQ.eyJpYXQiOjE3MjI5NzU4NDQsImV4cCI6MTcyMjk5NzQ0NCwibmJmIjoxNzIyOTc1ODM5LCJpc3MiOiJyaXZpYW4uY29tIiwiYXVkIjpbImh0dHBzOi8vKiIsImh0dHBzOi8vaWQuZGV2LnVlMS5kYy5nb3Jpdi5jby8iLCJodHRwczovLyouZGV2IiwiaHR0cHM6Ly9hdXRoLmRldi51ZTEuZGMuZ29yaXYuY28vIl0sImNsaWVudF9pZCI6IlJJVklBTl9JREVOVElUWV9TRVJWSUNFIiwic2NvcGUiOiIqIiwidXNlcl9pZCI6IjAyLWNhYzgxNTEyLTNkOGYtNDNjNi04NjE4LTY1ZThmNDFkYjMzNi03NTBkMzIxMSJ9.YaHx1UiZ9MxpnxijzDl1GzqlQBnVACZq9Ax_8kRKCLVpk4kJe1ufAnIMHjfsVmPAqhKFjLKtVGkdvt7Jo_7m_gohlINEGIZImh1SQ7c1wEO_nBJ9WiTfR8I1UYgSi29L9Se8UN52Bo4FoI39PLc5gUIetiIo6ujO6OC_f1gEUJxdaCDGhhU-MogCUxUZ5XBW2F9CUDSMp18TE8SP_RiVkpW0tf1kV1k0Qu9Ow7sMlRHdWskTH6feJUil6vYuUqzjSTi_vTcTZ5mOE9xdHHoR_A369ypLMSA5tFbuEzzjAbzfz18J9W3oSZe7eqsDoo0GgIBCtYqqIwgw2sgnTx2TSQ",
+            "Authorization": sprintf("Bearer %s", [auth_token]),
             "dc-cid": "haha",
-            "x-riv-client-token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZiOTE4Y2Q4MDY5YjEzNmQxNWExMWRlNzIxZTA3YjBjMzhkYTA2YTAiLCJ0eXAiOiJKV1QifQ.eyJpYXQiOjE3MjI5NzU4NDQsImV4cCI6MTcyMjk5NzQ0NCwibmJmIjoxNzIyOTc1ODM5LCJpc3MiOiJyaXZpYW4uY29tIiwiYXVkIjpbImh0dHBzOi8vKiIsImh0dHBzOi8vaWQuZGV2LnVlMS5kYy5nb3Jpdi5jby8iLCJodHRwczovLyouZGV2IiwiaHR0cHM6Ly9hdXRoLmRldi51ZTEuZGMuZ29yaXYuY28vIl0sImNsaWVudF9pZCI6IlJJVklBTl9JREVOVElUWV9TRVJWSUNFIiwic2NvcGUiOiIqIiwidXNlcl9pZCI6IjAyLWNhYzgxNTEyLTNkOGYtNDNjNi04NjE4LTY1ZThmNDFkYjMzNi03NTBkMzIxMSJ9.YaHx1UiZ9MxpnxijzDl1GzqlQBnVACZq9Ax_8kRKCLVpk4kJe1ufAnIMHjfsVmPAqhKFjLKtVGkdvt7Jo_7m_gohlINEGIZImh1SQ7c1wEO_nBJ9WiTfR8I1UYgSi29L9Se8UN52Bo4FoI39PLc5gUIetiIo6ujO6OC_f1gEUJxdaCDGhhU-MogCUxUZ5XBW2F9CUDSMp18TE8SP_RiVkpW0tf1kV1k0Qu9Ow7sMlRHdWskTH6feJUil6vYuUqzjSTi_vTcTZ5mOE9xdHHoR_A369ypLMSA5tFbuEzzjAbzfz18J9W3oSZe7eqsDoo0GgIBCtYqqIwgw2sgnTx2TSQ"
+            "x-riv-client-token": auth_token
         }
     })
     
