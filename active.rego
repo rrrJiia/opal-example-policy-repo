@@ -12,14 +12,11 @@ get_user_by_user_id[user_id] {
     # Use the user_id from the decrypted token
     user_id := decrypt.user_id
 
-    # Debug: Print the user_id used in HTTP request
-    print(user_id)
-    
     # Construct the URL
     url := sprintf("https://user-mgmt.dev.ue1.dc.goriv.co/id/v2/users/%s", [user_id])
     
     auth_token := opa.runtime().env["AUTH_TOKEN"]
-    print("auth token:", opa.runtime().env["AUTH_TOKEN"])
+    # print("auth token:", opa.runtime().env["AUTH_TOKEN"])
     
     # Perform HTTP request and capture response
     resp := http.send({
@@ -37,7 +34,11 @@ get_user_by_user_id[user_id] {
     
     # Ensure status code check before binding response
     resp.status_code == 200
-    not resp.body.data.disabled
+    data := object.get(resp.body, "data", null)
+    data != null
+
+    not data.disabled
+    
 }
 
 # Policy to allow actions based on conditions
