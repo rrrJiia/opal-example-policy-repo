@@ -11,6 +11,7 @@ get_primary_owner_info_by_user_id[user_id] {
     # Use the user_id from the decrypted token
     user_id := decrypt.user_id
     url := sprintf("https://vms.dev.ue1.dc.goriv.co/vms/v2/provision/list/users/%s", [user_id])
+    auth_token := opa.runtime().env["AUTH_TOKEN"]
     # Perform HTTP request and capture response
     resp := http.send({
         "method": "get",
