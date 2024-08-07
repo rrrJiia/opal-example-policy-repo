@@ -25,10 +25,18 @@ get_primary_owner_info_by_user_id[user_id] {
             "x-riv-client-token": auth_token
         }
     })
-    print("HTTP response for user: %v", [resp])
+  
+    print("HTTP response: %v", [resp])
+
+    # Check if the HTTP response is successful
     resp.status_code == 200
-    fetched_data := object.get(resp.body, "roles", null)
-    not fetched_data == null
+
+    # Extract roles from the response body
+    roles := object.get(resp.body, "roles", [])
+    print("Extracted roles: %v", [roles])
+
+    # Ensure that roles are not null
+    not roles == []
     
     some i
     entry := resp.body.roles[i]
