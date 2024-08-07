@@ -38,7 +38,6 @@ get_primary_owner_info_by_user_id[user_id] {
     print("Extracted entry: %v", [entry.user_id])
     entry.vehicle_id == input.vehicle_id
     print("Extracted entry: %v", [entry.vehicle_id])
-    false
 }
 allow {
     # get_user_by_user_id[user_id]
