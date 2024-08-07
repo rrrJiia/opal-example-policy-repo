@@ -1,6 +1,5 @@
 package primary.owner
 import data.token.decrypt
-import data.user.active
 
 default allow = false
 
