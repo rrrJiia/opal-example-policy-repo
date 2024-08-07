@@ -27,7 +27,7 @@ get_primary_owner_info_by_user_id[user_id] {
     print("HTTP response for user: %v", [resp])
     resp.status_code == 200
     fetched_data := object.get(resp.body, "roles", null)
-    fetched_data != null
+    not fetched_data == null
     
     some i
     entry := resp.body.roles[i]
